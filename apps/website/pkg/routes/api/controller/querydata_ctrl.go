@@ -16,16 +16,6 @@ type QueryDataController struct {
 
 // post querydata/AllData  => get all data with id &jsonMap
 func (*QueryDataController) AllData(ctx *gin.Context) {
-	err = repo.GetQueryDataModel().AddDataById()
-	if req == nil {
-		ctx.JSON(http.StatusBadRequest, "set mongo error")
-		return
-	}
-	rsp := response.QueryDataRsp{
-		Id:      req.Id,
-		JsonMap: req.JsonMap,
-	}
-	ctx.JSON(200, rsp)
 	ctx.Status(200)
 }
 
