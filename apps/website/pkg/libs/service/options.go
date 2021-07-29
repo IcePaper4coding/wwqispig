@@ -19,10 +19,10 @@ type ServiceOptions struct {
 	Exit    chan struct{}
 }
 
-//var DefaultServer server.Server = server.NewGrpcServer()
+// var DefaultServer server.Server = server.NewGrpcServer()
 func newOptions(opts ...Option) ServiceOptions {
 	opt := ServiceOptions{
-		//Servers:  []server.Server{DefaultServer},
+		// Servers:  []server.Server{DefaultServer},
 		Context: context.Background(),
 		Exit:    make(chan struct{}),
 	}

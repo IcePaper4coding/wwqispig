@@ -19,6 +19,7 @@ func (hs *httpServer) Options() ServerOptions {
 	return hs.opts
 }
 
+// 注册路由以及接口层
 func (hs *httpServer) Init(opts ...Option) error {
 	for _, o := range opts {
 		o(&hs.opts)
@@ -31,11 +32,13 @@ func (hs *httpServer) Init(opts ...Option) error {
 	return nil
 }
 
+// 项目启动初始化
 func (this *httpServer) Start() error {
 
 	return nil
 }
 
+// 项目结束反初始化
 func (hs *httpServer) Stop() error {
 	close(hs.opts.Exit)
 	// if err := hs.routes.UnInit(); err != nil {
