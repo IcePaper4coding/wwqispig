@@ -18,7 +18,7 @@
 <div class="closeimg"  @click="toclose" v-if="toastswitch.istoast">
 
 </div>
-<div :class="toastswitch.flagtoast?'toast aniopen':'toast aniclose'" v-if="toastswitch.istoast">
+<div :class="toastswitch.flagtoast?'toast':'toast aniclose'" v-if="toastswitch.istoast">
 
     <div style="color:#fff;margin-top:15px">{{toastswitch.inputname[swnum].f}}</div>
 
@@ -146,12 +146,10 @@ this.$http.checklogin(()=>{
                       this.$http.query(obj[this.info.username].pid)
                         setTimeout(()=>{
                             this.$toast.loading('正在跳转',true)
-                            console.log('1');
                         },1000)
                         setTimeout(()=>{
                             this.$toast.loading('正在跳转',false)
                             this.$router.push('/home?id=0')
-                            console.log('2');
                         },2000)
                   }
                   else{
@@ -430,8 +428,7 @@ this.$http.checklogin(()=>{
     transform: translate(-50%,-50%);
     width: 345px;
     height: 500px;
-    background: floralwhite;
-    background-image:linear-gradient(bottom,#ab64f6,#61dbf7);
+    background:rgba($color: #000000, $alpha: 0.7);
     border-radius: 15px;
     border: #fff 1px solid;
     
