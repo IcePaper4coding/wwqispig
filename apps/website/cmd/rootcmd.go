@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"flag"
+	"wwqispig/config"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +22,7 @@ func GetRootCmd(args []string) *cobra.Command {
 		"config file containing args(default is $HOME/.demo.yaml)")
 	// OnInitialize设置在调用每个命令的Execute方法时要运行的传递函数。
 	cobra.OnInitialize(func() {
-		// config.ParseConfig(cfgFile)
+		config.ParseConfig(cfgFile)
 	})
 
 	rootCmd.SetArgs(args)
