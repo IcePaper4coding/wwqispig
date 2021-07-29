@@ -17,7 +17,7 @@ func ServerCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			// 新建服务类, 用于初始化以及运作,通过AOP打印日志
 			s := service.NewService(
-				// service.Server(server.NewHelloServer()),
+				service.Server(server.NewhttpServer()),
 				service.BeforeStart(func() error {
 					return nil
 				}),
