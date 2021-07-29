@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>我在未来等你</title>
+    <script async>
+        var _LoadingHtml = `
+        <div id="loading" style="width: 100vw;height: 100vh;display: flex;justify-content: center;align-items: center;margin: 0;">
+        <img src="http://wwqwby.cn/myimg/loadingimg.gif" alt="" style="width: 80%;">
+        <div style="position: absolute;width: 100%;height: 85px;font-size:13px"><div style="position: absolute;top: 0px;left: 50%;transform: translateX(-50%);color:#00fffc;font-weight:600">首次可能加载较慢……请稍后</div></div>
+        </div>`;
+        document.write(_LoadingHtml);
+        document.querySelector('body').style.margin=0
+            window.onload =function()
+            {
+            document.querySelector('#loading').style.display='none'
+            }
+    </script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    
+  </body>
+  <style>
+      body{
+          margin: 0;
+      }
+  </style>
+</html>
