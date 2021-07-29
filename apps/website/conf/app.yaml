@@ -1,2 +1,8 @@
 httpservice:
   port : 8090
+mongodb:
+  host: localhost:27017
+  user: admin
+  pwd: admin
+  dbname: test
+  cname: people
