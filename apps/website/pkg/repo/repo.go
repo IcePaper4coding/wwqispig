@@ -4,6 +4,8 @@ import (
 	"sync"
 	"wwqispig/pkg/libs/dboperator"
 	"wwqispig/pkg/model"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 var (
@@ -30,4 +32,13 @@ func (q *QueryDataModel) AddDataById(id, jsonMap string) error {
 		JsonMap: jsonMap,
 	}
 	return q.repo.Insert(info)
+}
+
+func (q *QueryDataModel) QueryDataById(id string) (model.QueryData, error) {
+	info := new(model.QueryData)
+	if err := q.repo.FindOne(bson.M{"id": id}, &info); err != nil {
+		return model.QueryData{}, nil
+	}
+
+	return *info, nil
 }
