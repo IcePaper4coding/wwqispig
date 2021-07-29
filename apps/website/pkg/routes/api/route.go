@@ -25,6 +25,7 @@ func (r *Routes) RegisterRoutes(engine *gin.Engine) error {
 	groupOps := engine.Group("/querydata")
 	{
 		groupOps.POST("/AllData", r.queryDataCtrl.AllData)
+		groupOps.POST("/addDataById", r.queryDataCtrl.AddDataById)
 	}
 	return nil
 }
