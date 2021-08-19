@@ -132,9 +132,8 @@ export default {
         this.$toast.loading('正在发布',true)
           this.$http.query(10000).then(res=>{
               var mydata =JSON.parse(localStorage.getItem('wqbytoken'))
-              if(res.data.jsonmap){
+              if(res.data.jsonmap.length>2){
                   var data =JSON.parse(res.data.jsonmap)
-                  
               }
               else{
                   var data =[]
@@ -176,19 +175,29 @@ export default {
       delimg(e){
            this.imglist.splice(e,1)
       },
+        dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return [u8arr];
+        },
       handleInputChangeFunc(event,targetName){
           for(var item of event.target.files){
               const file = item;
               const imgMasSize = 1024 * 1024 * 2;
-              let formObj = new FormData();
-              formObj.append('file', file);
-              formObj.append('type', 'img');
-              this.$toast.loading('正在上传',true)
-              this.$http.upload(formObj).then(res=>{
-                 var arr = res.data.split(':')
-                 this.$toast.loading('正在上传',false)
-                 this.imglist.push(arr[1] +":"+arr[2])
+            var that = this
+            var reader = new FileReader(); //实例化文件读取对象
+            reader.readAsDataURL(file); //将文件读取为 DataURL,也就是base64编码
+            reader.onload = function(ev) { //文件读取成功完成时触发
+            var formObj = new File(that.dataURLtoBlob(reader.result), file.name, {type:file.type})
+                that.$toast.loading('正在上传',true)
+                that.$http.upload(formObj,file.name).then(res=>{
+                 that.$toast.loading('正在上传',false)
+                 that.imglist.push('http://47.94.235.210:8090/uploadData/getFile/'+res.data.id)
               })
+          }
           }
 
       }

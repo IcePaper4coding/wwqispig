@@ -1,0 +1,177 @@
+{
+  "id": "1619143",
+  "name": "new_icon",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "12527804",
+      "name": "粗体",
+      "font_class": "bold",
+      "unicode": "e6bb",
+      "unicode_decimal": 59067
+    },
+    {
+      "icon_id": "12527805",
+      "name": "表格",
+      "font_class": "insert-table",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    },
+    {
+      "icon_id": "12527806",
+      "name": "代码",
+      "font_class": "code",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
+      "icon_id": "12527807",
+      "name": "居中",
+      "font_class": "align-center",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    },
+    {
+      "icon_id": "12527808",
+      "name": "目录",
+      "font_class": "catalog",
+      "unicode": "e6bf",
+      "unicode_decimal": 59071
+    },
+    {
+      "icon_id": "12527809",
+      "name": "斜体",
+      "font_class": "italic",
+      "unicode": "e6c0",
+      "unicode_decimal": 59072
+    },
+    {
+      "icon_id": "12527810",
+      "name": "右对齐",
+      "font_class": "align-right",
+      "unicode": "e6c3",
+      "unicode_decimal": 59075
+    },
+    {
+      "icon_id": "12527811",
+      "name": "无序列表",
+      "font_class": "ul",
+      "unicode": "e6c4",
+      "unicode_decimal": 59076
+    },
+    {
+      "icon_id": "12527812",
+      "name": "左对齐",
+      "font_class": "align-left",
+      "unicode": "e6c5",
+      "unicode_decimal": 59077
+    },
+    {
+      "icon_id": "12527813",
+      "name": "下划线",
+      "font_class": "underline",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
+    },
+    {
+      "icon_id": "12527814",
+      "name": "删除线",
+      "font_class": "strike",
+      "unicode": "e6c7",
+      "unicode_decimal": 59079
+    },
+    {
+      "icon_id": "12527815",
+      "name": "链接",
+      "font_class": "link",
+      "unicode": "e6c9",
+      "unicode_decimal": 59081
+    },
+    {
+      "icon_id": "12527816",
+      "name": "下拉",
+      "font_class": "select",
+      "unicode": "e6ca",
+      "unicode_decimal": 59082
+    },
+    {
+      "icon_id": "12527817",
+      "name": "有序列表",
+      "font_class": "ol",
+      "unicode": "e6cb",
+      "unicode_decimal": 59083
+    },
+    {
+      "icon_id": "12527818",
+      "name": "图",
+      "font_class": "img",
+      "unicode": "e6ce",
+      "unicode_decimal": 59086
+    },
+    {
+      "icon_id": "12528094",
+      "name": "分割单元格",
+      "font_class": "split-cell",
+      "unicode": "e6cf",
+      "unicode_decimal": 59087
+    },
+    {
+      "icon_id": "12528095",
+      "name": "合并单元格",
+      "font_class": "merge-cell",
+      "unicode": "e6d0",
+      "unicode_decimal": 59088
+    },
+    {
+      "icon_id": "12528096",
+      "name": "删除表格",
+      "font_class": "del-table",
+      "unicode": "e6d1",
+      "unicode_decimal": 59089
+    },
+    {
+      "icon_id": "12528097",
+      "name": "删除列",
+      "font_class": "del-col",
+      "unicode": "e6d2",
+      "unicode_decimal": 59090
+    },
+    {
+      "icon_id": "12528098",
+      "name": "下加一行",
+      "font_class": "below-row",
+      "unicode": "e6d3",
+      "unicode_decimal": 59091
+    },
+    {
+      "icon_id": "12528099",
+      "name": "删除行",
+      "font_class": "del-row",
+      "unicode": "e6d6",
+      "unicode_decimal": 59094
+    },
+    {
+      "icon_id": "12528100",
+      "name": "上加一行",
+      "font_class": "above-row",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    },
+    {
+      "icon_id": "12528101",
+      "name": "右加一列",
+      "font_class": "right-col",
+      "unicode": "e6d8",
+      "unicode_decimal": 59096
+    },
+    {
+      "icon_id": "12528102",
+      "name": "左加一列",
+      "font_class": "left-col",
+      "unicode": "e6d9",
+      "unicode_decimal": 59097
+    }
+  ]
+}

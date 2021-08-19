@@ -293,44 +293,53 @@ export default {
               })
           })
       },
+              dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return [u8arr];
+        },
     handleInputChangeFunc(event,targetName){
           for(var item of event.target.files){
               const file = item;
               const imgMasSize = 1024 * 1024 * 2;
-              let formObj = new FormData();
-              formObj.append('file', file);
-              formObj.append('type', 'img');
-              this.$toast.loading('正在上传',true)
-              this.$http.upload(formObj).then(res=>{
-                 var arr = res.data.split(':')
-                 this.$toast.loading('正在上传',false)
-              var time = new Date().getTime()
-              var obj = {userid:this.myinfo.id,info:'',faceimg:this.myinfo.faceimg,senttime:time,img:arr[1] +":"+arr[2]}
-              this.messagelist.push(obj)
-              this.imglist=[]
-              for(var items of this.messagelist){
-                          if(items.img){
-                              this.imglist.push(items.img)
-                          }
-                }
-                this.$http.query(70000).then(res=>{
-                    var alllist = JSON.parse(res.data.jsonmap)
-                    alllist[this.myinfo.id] = this.messagelist
-                    this.$set(alllist,this.loveid,this.messagelist)
-                    this.$http.change(70000,alllist,()=>{
-                        this.$http.query(70000).then(ress=>{
-                            var alllist = JSON.parse(ress.data.jsonmap)
-                            this.messagelist = alllist[this.myinfo.id]
-                            document.getElementById("bottomitem").scrollIntoView({
-                                        behavior:'smooth',
-                                        block:"end"
-                                });
+            var that = this
+            var reader = new FileReader(); //实例化文件读取对象
+            reader.readAsDataURL(file); //将文件读取为 DataURL,也就是base64编码
+            reader.onload = function(ev) { //文件读取成功完成时触发
+            var formObj = new File(that.dataURLtoBlob(reader.result), file.name, {type:file.type})
+                that.$toast.loading('正在上传',true)
+                that.$http.upload(formObj,file.name).then(res=>{
+                    that.$toast.loading('正在上传',false)
+                    var time = new Date().getTime()
+                    var obj = {userid:that.myinfo.id,info:'',faceimg:that.myinfo.faceimg,senttime:time,img:'http://47.94.235.210:8090/uploadData/getFile/'+res.data.id}
+                    that.messagelist.push(obj)
+                    that.imglist=[]
+                    for(var items of that.messagelist){
+                                if(items.img){
+                                    that.imglist.push(items.img)
+                                }
+                    }
+                    that.$http.query(70000).then(res=>{
+                        var alllist = JSON.parse(res.data.jsonmap)
+                        alllist[that.myinfo.id] = that.messagelist
+                        that.$set(alllist,that.loveid,that.messagelist)
+                        that.$http.change(70000,alllist,()=>{
+                            that.$http.query(70000).then(ress=>{
+                                var alllist = JSON.parse(ress.data.jsonmap)
+                                that.messagelist = alllist[that.myinfo.id]
+                                document.getElementById("bottomitem").scrollIntoView({
+                                            behavior:'smooth',
+                                            block:"end"
+                                    });
+                            })
                         })
                     })
-                })
-
               })
-          }
+            }
+        }
       },
       editfunc(e){
           console.log(e);

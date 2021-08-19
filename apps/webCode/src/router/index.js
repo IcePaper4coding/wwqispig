@@ -4,14 +4,8 @@ import Router from 'vue-router'
 // import VueResource from 'vue-resource'
 // Vue.use(VueResource);
 Vue.use(Router)
+let router = [
 
-export default new Router({
-    
-  routes: [
-    {
-        path: '/',
-        redirect: '/login'
-    },
     {
         path: '/test',
         meta: { requireAuth: false,title: '登录页' },
@@ -101,6 +95,53 @@ export default new Router({
         component: resolve => require.ensure([], () => resolve(require('../view/mygame/pengpengball.vue')), 'pengpengball'),
         meta: { requireAuth: false, title: "碰碰球", keepAlive: true }
     },
-  ],
+    {
+        path: "/Blog",
+        name: "Blog",
+        component: resolve => require.ensure([], () => resolve(require('../view/pcPage/Blog/BlogPortal.vue')), 'BlogPortal'),
+        meta: { requireAuth: false, title: "博客", keepAlive: true },
+        children:[
+            {
+                path: "/Bloghome",
+                name: "Blog",
+                component: resolve => require.ensure([], () => resolve(require('../view/pcPage/Blog/Blog.vue')), 'Blog'),
+                meta: { requireAuth: false, title: "博客主页", keepAlive: true }
+            },
+            {
+                path: "/APIpage",
+                name: "APIpage",
+                component: resolve => require.ensure([], () => resolve(require('../view/pcPage/Blog/APIpage.vue')), 'APIpage'),
+                meta: { requireAuth: false, title: "API文档", keepAlive: true }
+            },
+            {
+                path: "/AddBlogpage",
+                name: "APIpage",
+                component: resolve => require.ensure([], () => resolve(require('../view/pcPage/Blog/quillFlie/quillPage.vue')), 'quillPage'),
+                meta: { requireAuth: false, title: "API文档", keepAlive: true }
+            },
+            {
+                path: "/BlogpageDtl/:id",
+                name: "APIpage",
+                component: resolve => require.ensure([], () => resolve(require('../view/pcPage/Blog/quillFlie/quillPageDtl.vue')), 'quillPageDtl'),
+                meta: { requireAuth: false, title: "文档详情", keepAlive: true }
+            },
+        ]
+    },
+  ]
 
+if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+    router.push({
+        path: '/',
+        redirect: '/login'
+    })
+}
+else{
+    router.push({
+        path: '/',
+        redirect: '/Bloghome'
+    })
+    document.title="Weblog"
+}
+export default new Router({
+  routes: router
 })

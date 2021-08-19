@@ -18,7 +18,7 @@
 <div class="closeimg"  @click="toclose" v-if="toastswitch.istoast">
 
 </div>
-<div :class="toastswitch.flagtoast?'toast':'toast aniclose'" v-if="toastswitch.istoast">
+<div :class="toastswitch.flagtoast?'toast aniopen':'toast aniclose'" v-if="toastswitch.istoast">
 
     <div style="color:#fff;margin-top:15px">{{toastswitch.inputname[swnum].f}}</div>
 
@@ -77,6 +77,10 @@ this.$http.checklogin(()=>{
 // this.$http.delete(200816)
 // this.$http.delete(80000)
 // this.$http.add(80000,{pnum:80000})
+// this.$http.add(200816,{})
+// this.$http.add(10002,{})
+// this.$http.add(10000,{})
+// this.$http.add(70000,{})
   },
   methods:{
       toclose(){
@@ -125,7 +129,6 @@ this.$http.checklogin(()=>{
                           num = Math.floor(Math.random()*(this.wordlist.length - 1))
                           asstoken+=this.wordlist[num]
                       }
-                      console.log(asstoken);
                       this.$http.query(obj[this.info.username].pid).then(res=>{
                           var objss = JSON.parse(res.data.jsonmap)
 
@@ -159,6 +162,8 @@ this.$http.checklogin(()=>{
             else{
                 this.$toast.toast('账号或密码错误')
               }
+          }).catch(()=>{
+              this.$toast.toast('系统正在维护，请稍后……',800)
           })
             
       },
@@ -428,7 +433,8 @@ this.$http.checklogin(()=>{
     transform: translate(-50%,-50%);
     width: 345px;
     height: 500px;
-    background:rgba($color: #000000, $alpha: 0.7);
+    background: floralwhite;
+    background-image:linear-gradient(bottom,#ab64f6,#61dbf7);
     border-radius: 15px;
     border: #fff 1px solid;
     

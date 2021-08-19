@@ -3,21 +3,21 @@
 <div v-for="(item,index) in datalist" class="pyqmessage" :key="index+'ga'">
     <div style="display:flex" >
     <div class="pyqface">
-        <img :src="item.authimg||require('../../assets/img/faceicon/face1.png')" alt="" style="width:40px;height:40px">
+        <img :src="item.authimg||require('../../assets/img/faceicon/face1.png')" alt="" style="width:40px;">
     </div>
     <div style="width:100%">
-    <div class="authname">{{item.authname}}<div style="margin-left:10px;margin-top:2px"><img :src="item.sex=='男'?require('../../assets/img/m.png'):require('../../assets/img/wm.png')" alt="" style="width:15px;margin-top:4px"></div></div>
+    <div class="authname">{{item.authname}}<div style="margin-left:10px;display: flex;align-items: center;"><img :src="item.sex=='男'?require('../../assets/img/m.png'):require('../../assets/img/wm.png')" alt="" style="width:15px;margin-top:4px"></div></div>
     <div class="info">{{item.info}}</div>
     <div class="showimg" style="margin-top:15px;">
         <div :style="'width:'+fullWidth/4+'px;height:'+fullWidth/4+'px;overflow: hidden;margin:5px'" v-for="(items,indexs) of item.img" :key="indexs+'g'" @click="showitem(index,indexs)">
-        <img :src="items" alt="" :style="'height:'+fullWidth/4+'px;'">
+        <img :src="items" alt="" style="width:100%">
         </div>
     </div>
     <div class="edit">
-        <div style="font-size: 15px;margin-left:15px;color:rgb(90 90 90);margin-top:10px">{{item.creattime|timeFilter}}</div>
-        <div style="display:flex;margin-top:10px">
+        <div style="font-size: 12px;margin-left:15px;color:rgb(90 90 90);">{{item.creattime|timeFilter}}</div>
+        <div style="display:flex;">
             <div style="display:flex;font-size:12px" v-if="nameid==item.id">
-                <div style="font-size:12px;color:#007aff;text-decoration: underline;margin-right:5px" @click="deltc(index)">删除</div>
+                <div style="font-size:12px;color:#007aff;text-decoration: underline;margin-right:15px;display: flex;align-items: center;" @click="deltc(index)">删除</div>
                 <img :src="item.islove?require('../../assets/img/isview.png'):require('../../assets/img/noview.png')" alt="" style="width:20px;height:20px" @click="todiz(index)">
                 <div style="margin-left:5px;height:20px;line-height:20px">{{item.islove?"  对方已读":"  对方未读"}}</div>
             </div>
@@ -421,16 +421,26 @@ export default {
             for(var item of event.target.files){
               const file = item;
               const imgMasSize = 1024 * 1024 * 2;
-              let formObj = new FormData();
-              formObj.append('file', file);
-              formObj.append('type', 'img');
-              this.$toast.loading('正在上传',true)
-              this.$http.upload(formObj).then(res=>{
-                  this.$toast.loading('正在上传',false)
-                 var arr = res.data.split(':')
-                 this.comimglist.push(arr[1] +":"+arr[2])
-              })
+            var that = this
+            var reader = new FileReader(); //实例化文件读取对象
+            reader.readAsDataURL(file); //将文件读取为 DataURL,也就是base64编码
+            reader.onload = function(ev) { //文件读取成功完成时触发
+            var formObj = new File(that.dataURLtoBlob(reader.result), file.name, {type:file.type})
+                that.$toast.loading('正在上传',true)
+                that.$http.upload(formObj,file.name).then(res=>{
+                that.$toast.loading('正在上传',false)
+                    that.comimglist.push('http://47.94.235.210:8090/uploadData/getFile/'+res.data.id)
+                })
+            }
           }
+        },
+        dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return [u8arr];
         },
         deltc(e){
             this.delnum=e
@@ -506,7 +516,8 @@ margin-bottom: 20px;
     border: 1px solid #e5e5e5;
     border-radius: 5px;
     margin-left: 15px;
-    display: flex;
+    overflow: hidden;
+    flex: 0 0 auto;
 }
 .authname{
     display: flex;
@@ -517,7 +528,7 @@ margin-bottom: 20px;
     color: #5998de;
     font-weight: 600;
     font-size: 15px;
-    padding-left: 15px;
+    padding-left: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:nowrap
@@ -526,12 +537,13 @@ margin-bottom: 20px;
     padding-top: 15px;
     width: 100%;
     border-bottom: 1px solid #e5e5e5;
+    
 }
 .info{
     text-align: start;
     min-height: 20px;
-    padding-top: 10px;
-    padding-left: 15px;
+    padding-top: 0px;
+    padding-left: 10px;
     // padding-right: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -542,9 +554,10 @@ margin-bottom: 20px;
 }
 .showimg{
     width: 100%;
-      margin-top: 15px;
-      display: flex;
-      flex-wrap: wrap;
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
 }
 .edit{
     display: flex;
@@ -552,6 +565,7 @@ margin-bottom: 20px;
     justify-content: space-between;
     margin-bottom: 10px;
     white-space: nowrap;
+    align-items: center;
 }
 .pyq::-webkit-scrollbar {  //chrome 和Safari，电脑端微信浏览器
     width: 0 !important;

@@ -219,9 +219,7 @@ setInterval(()=>{
   },
   methods:{
       isloading(i){
-          console.log(i);
           this.bannerlistflag.splice(i,1,true)
-          console.log(this.bannerlistflag);
       },
       toscroll(){
           this.scrolls = setInterval(()=>{
@@ -306,52 +304,62 @@ setInterval(()=>{
               deg+=1
           }, 20);
       },
+        dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return [u8arr];
+        },
         handleInputChangeFunc(event,targetName){
           for(var item of event.target.files){
               const file = item;
               const imgMasSize = 1024 * 1024 * 2;
-              let formObj = new FormData();
-              formObj.append('file', file);
-              formObj.append('type', 'img');
-              this.$toast.loading('正在上传',true)
-              this.$http.upload(formObj).then(res=>{
-                this.$toast.loading('正在上传',false)
-                 var arr = res.data.split(':')
+            var that = this
+            var reader = new FileReader(); //实例化文件读取对象
+            reader.readAsDataURL(file); //将文件读取为 DataURL,也就是base64编码
+            reader.onload = function(ev) { //文件读取成功完成时触发
+            var formObj = new File(that.dataURLtoBlob(reader.result), file.name, {type:file.type})
+                that.$toast.loading('正在上传',true)
+                that.$http.upload(formObj,file.name).then(res=>{
+                that.$toast.loading('正在上传',false)
                  var obj = {
                     isSeleted: false,
-                    type: this.imglist.length,
-                    img: arr[1] +":"+arr[2],
+                    type: that.imglist.length,
+                    img: 'http://47.94.235.210:8090/uploadData/getFile/'+res.data.id,
                  }
-                 var imglist = this.imgList1
+                 var imglist = that.imgList1
                  imglist.unshift(obj)
-                 this.imgList1=[]
-                 this.$nextTick(()=>{
-                     this.imgList1 = imglist
+                 that.imgList1=[]
+                 that.$nextTick(()=>{
+                     that.imgList1 = imglist
                     var mydata = JSON.parse(localStorage.getItem('wqbytoken'))
-                    this.$http.query(mydata.id).then(res=>{
+                    that.$http.query(mydata.id).then(res=>{
                         if(res.data.jsonmap){
                             var ress = JSON.parse(res.data.jsonmap)
                             if(ress.banner){
-                                ress.banner=this.imgList1
+                                ress.banner=that.imgList1
                             }
                             else{
-                                this.$set(ress,'banner',this.imgList1)
+                                that.$set(ress,'banner',that.imgList1)
                             }
                         }
-                        this.$http.change(mydata.id,ress,()=>{
+                        that.$http.change(mydata.id,ress,()=>{
                             
                         })
-                        this.$http.query(ress.loverid).then(res1=>{
+                        that.$http.query(ress.loverid).then(res1=>{
                             
                             var loveres = JSON.parse(res1.data.jsonmap)
-                            this.$set(loveres,'banner',this.imgList1)
-                            this.$http.change(ress.loverid,loveres,()=>{
+                            that.$set(loveres,'banner',that.imgList1)
+                            that.$http.change(ress.loverid,loveres,()=>{
                                 
                             })
                         })
                     })
                  })
               })
+          }
           }
 
       },
@@ -392,14 +400,15 @@ position: relative;
 background:url(../../assets/img/homebg.png) no-repeat 0 100%/100%;
 }
 .swiperimg{
-    // width: 300px;
     width: 100%;
-    height: 230px;
     border-radius: 0 0 10px 10px;
+    transform:translateY(-15%)
 }
 .swiper-log{
-padding-top: 5px;
-margin-top: 40px;
+    padding-top: 5px;
+    margin-top: 40px;
+    height: 40%;
+    position: relative;
 }
 .swiper-clone{
     width: 100%;
@@ -447,7 +456,8 @@ margin-top: 40px;
     z-index: 99;
 }
 .danmu{
-    position:relative;
+    position:absolute;
+    bottom: 100px;
     margin-top: 10px;
     height: 150px;
     width: 100%;
@@ -595,5 +605,8 @@ margin-top: 40px;
     100%{
         line-height: 21px;
     }
+}
+>>>.swiper-container{
+    height: 100%;
 }
 </style>

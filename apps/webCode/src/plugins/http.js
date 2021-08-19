@@ -19,7 +19,7 @@ export default {
                 id :String(id),
                 jsonmap:JSON.stringify(obj) 
             }
-        })  
+        })
     },
     change(id,info,callback){
         axios({
@@ -46,6 +46,19 @@ export default {
             method:'post',
             url:'http://47.94.235.210:8090/queryData/queryDataById',
             data:{id:String(iid)}
+        }).then((res)=>{
+            if(!res.data.jsonmap){
+                
+                var liobj = {
+                    id:'',
+                    jsonmap:JSON.stringify([])
+                }
+                var obj = {data:liobj}
+                return obj
+            }
+            else{
+                return res
+            }
         })
     },
     checklogin(okfunc,nofunc){
@@ -70,18 +83,19 @@ export default {
             nofunc()
         }
     },
-    upload(formObj){
+    upload(formObj,name){
         return axios({
-            method:'post',
-            url:'http://47.94.235.210:8090/upload',
-            data:formObj
+            method:'put',
+            url:'http://47.94.235.210:8090/uploadData/uploadFile/'+name,
+            data:formObj,
         })
     },
     proxy(obj){
         return axios({
              method:'post',
              url:'http://47.94.235.210:8090/http/proxyRequest',
-             data:obj
+             data:obj,
+             
          })
      },
 };

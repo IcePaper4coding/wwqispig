@@ -101,17 +101,34 @@ export default {
   },
   methods:{
       handleInputChangeFunc(event,targetName){
-              const file = event.target.files[0];
-              const imgMasSize = 1024 * 1024 * 2;
-              let formObj = new FormData();
-              formObj.append('file', file);
-              formObj.append('type', 'img');
-              this.$toast.loading('正在上传',true)
-              this.$http.upload(formObj).then(res=>{
-                this.$toast.loading('正在上传',false)
-                 var arr = res.data.split(':')
-                 this.img=arr[1] +":"+arr[2]
-              })
+            const file = event.target.files[0];
+            const imgMasSize = 1024 * 1024 * 2;
+            var that = this
+            var reader = new FileReader(); //实例化文件读取对象
+            reader.readAsDataURL(file); //将文件读取为 DataURL,也就是base64编码
+            reader.onload = function(ev) { //文件读取成功完成时触发
+            var formObj = new File(that.dataURLtoBlob(reader.result), file.name, {type:file.type})
+                that.$toast.loading('正在上传',true)
+                that.$http.upload(formObj,file.name).then(res=>{
+                that.$toast.loading('正在上传',false)
+                    that.img='http://47.94.235.210:8090/uploadData/getFile/'+res.data.id
+                })
+            }
+        },
+        dataURLtoBlob(dataurl) {
+
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+
+        while(n--){
+
+            u8arr[n] = bstr.charCodeAt(n);
+
+        }
+
+        return [u8arr];
+
         },
       goback(){
           this.$router.push('/my?id=4')
@@ -181,7 +198,6 @@ export default {
     overflow: hidden;
     img{
         width: 60px;
-        height: 60px;
         }
 }
 .myname{
@@ -242,7 +258,6 @@ export default {
     overflow: hidden;
     img{
         width: 60px;
-        height: 60px;
         }
     }
     .inputitems{

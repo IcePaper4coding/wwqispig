@@ -28,7 +28,6 @@ export default {
   },
   mounted(){
 this.$Bus.$on('showtabnum', (name,e) => {
-    console.log('gaga');
   for(var item of this.tablist){
       if(item.name == name){
           item.num = e

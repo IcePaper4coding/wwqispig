@@ -4,22 +4,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <link rel="shortcut icon" href="http://47.94.235.210:8090/uploadData/getFile/611b923d89a8ab65bad7f382" type="image/x-icon" />
     <title>我在未来等你</title>
     <script async>
         var _LoadingHtml = `
         <div id="loading" style="width: 100vw;height: 100vh;display: flex;justify-content: center;align-items: center;margin: 0;">
-        <img src="http://wwqwby.cn/myimg/loadingimg.gif" alt="" style="width: 80%;">
-        <div style="position: absolute;width: 100%;height: 85px;font-size:13px"><div style="position: absolute;top: 0px;left: 50%;transform: translateX(-50%);color:#707070;font-weight:600">首次可能加载较慢……</div></div>
+            <div style="position: absolute;width: 100%;height: 85px;font-size:13px">
+                <div style="position: absolute;top: 0px;left: 50%;transform: translateX(-50%);color:#61c7b0;font-weight:600;
+                display:flex;align-items:center;justify-content: center;flex-wrap: wrap;">
+                    <img src="https://queshu.oss-cn-beijing.aliyuncs.com/public/1367689524087357440/20210730/f7ee3251-90f5-4fff-b04c-1314c5e01d0a-loading.gif" alt="" >
+                <div style="width:100%;text-align: center;">
+                    加载中…
+                </div>
+            </div>
+        </div>
+            
         </div>`;
-        document.write(_LoadingHtml);
-        document.querySelector('body').style.margin=0
-            window.onload =function()
-            {
-            document.querySelector('#loading').style.display='none'
-            }
+            document.write(_LoadingHtml);
+            document.querySelector('body').style.margin=0
+                window.onload =function()
+                {
+                    document.querySelector('#loading').style.display='none'
+                }
     </script>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script>
+    
   </head>
   <body>
     <div id="app"></div>
