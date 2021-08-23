@@ -7,7 +7,7 @@
 </template>
 <script>
 
-import ybQuillEditor from './qsEditor/views/index.vue'
+import ybQuillEditor from './qsEditor/index.vue'
 export default {
   components:{
       ybQuillEditor,
