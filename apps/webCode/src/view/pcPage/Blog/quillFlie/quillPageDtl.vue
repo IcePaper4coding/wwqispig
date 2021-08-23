@@ -1,16 +1,19 @@
 <template>
 <div class="body" id="body">
         <div>
-            <ybQuillEditor :title.sync="title" v-model="editerInfo" :propObj="propObj"></ybQuillEditor>
+            <wqEditor :title.sync="title" v-model="editerInfo" :propObj="propObj"></wqEditor> 
+        </div>
+         <div class="pubBtn" @click="todel">
+            删除
         </div>
 </div>
 </template>
 <script>
 
-import ybQuillEditor from './qsEditor/index.vue'
+import wqEditor from './qsEditor/wqEditor/index.vue'
 export default {
   components:{
-      ybQuillEditor,
+      wqEditor,
   },
   data(){
       return{
@@ -35,18 +38,34 @@ export default {
 
             var allres = JSON.parse(res.data.jsonmap)
             var id = this.$route.params.id
-            console.log(allres);
             for(var item of allres){
                 if(item.DtlId == id){
                     this.editerInfo = JSON.parse(item.content)
                     this.title = item.minTitle
                 }
             }
-            console.log(this.editerInfo,this.minTitle);
         })
       },
       getinfo(){
 
+      },
+      todel(){
+        this.$http.query('api').then(res=>{
+            var allres = JSON.parse(res.data.jsonmap)
+            for(var index in allres){
+                if(allres[index].DtlId == this.$route.params.id){
+                    allres.splice(index,1)
+                }
+            }
+            this.$http.change('api',allres,()=>{
+                this.$message({
+                    showClose: true,
+                    message: '删除成功',
+                    type: 'success'
+                });
+                this.$router.go(-1)
+            })
+        })
       }
   },
 }
@@ -62,4 +81,21 @@ export default {
 >>>.yb-editor__title{
     width: 100%!important;
 }
+        .pubBtn{
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            background: #ff8198;
+            color: #fff;
+            margin-left: 15px;
+            &:hover{
+                background: #faa5b4;
+            }
+        }
 </style>

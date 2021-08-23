@@ -1,7 +1,7 @@
 <template>
 <div class="body" id="body">
         <div class="addQuillBox">
-            <ybQuillEditor :title.sync="title" v-model="editerInfo" :propObj="propObj"></ybQuillEditor>
+         <wqEditor :title.sync="title" v-model="editerInfo" :propObj="propObj"></wqEditor> 
         </div>
          <div class="pubBtn" @click="tosave">
             发布
@@ -10,10 +10,10 @@
 </template>
 <script>
 
-import ybQuillEditor from './qsEditor/views/index.vue'
+import wqEditor from './qsEditor/wqEditor/index.vue'
 export default {
   components:{
-      ybQuillEditor,
+      wqEditor,
   },
   data(){
       return{
@@ -54,13 +54,16 @@ export default {
                     message: '发布成功',
                     type: 'success'
                 });
-                this.$router.push('/BlogpageDtl/'+id+allres.length)
+                this.$router.push('/BlogpageDtl/'+quillObj.DtlId)
             })
         })
       },
         tolog(){
             this.$refs.quilleditor.tolog()
         },
+        getinfo(){
+
+        }
   },
 }
 </script>
