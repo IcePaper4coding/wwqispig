@@ -21,14 +21,59 @@
                         v-model="keyword">
                     </el-input>
                 </div>
-                <div class="loginBox">登录</div>
+                <div class="loginBox" @click="dialogVisible = true">登录</div>
             </div>
         </div>
     </div>
     <div class="BlogBody">
         <router-view></router-view>
     </div>
-
+    <el-dialog
+        :visible.sync="dialogVisible"
+        width="27%"
+        top="5vh"
+        >
+        <div slot="title" class="loginTitle">
+        </div>
+        <div class="loginBody">
+            <div class="loginLogoBox">
+                <img class="img" src="http://47.94.235.210:8090/uploadData/getFile/611b923d89a8ab65bad7f382" alt="">
+            </div>
+            <div class="loginBox">
+                <div class="loginTab">
+                    <div v-for="(item,index) of activeTab" :key="index" class="tabItem" 
+                    :class="actTab== item.tabVal?'actTab':''" @click="actTab = item.tabVal">{{item.tabName}}</div>
+                </div>
+                <div class="loginInput">
+                    <div v-if="actTab=='login'">
+                        <el-input  prefix-icon="el-icon-user" v-model="loginInfo.account" placeholder="请输入账号"></el-input>
+                        <el-input  prefix-icon="el-icon-lock" v-model="loginInfo.password" type="password" placeholder="请输入密码"></el-input>
+                        <div class="forgetPass">
+                            <span>忘记密码？</span>
+                            
+                        </div>
+                        <div class="loginBtnBox">
+                            <div class="loginBtn">
+                                登陆
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="actTab=='register'">
+                        <el-input  prefix-icon="el-icon-user" v-model="loginInfo.account" placeholder="请输入账号"></el-input>
+                        <el-input  prefix-icon="el-icon-lock" v-model="loginInfo.password" type="password" placeholder="请输入密码"></el-input>
+                        <el-input  prefix-icon="el-icon-lock" v-model="loginInfo.password" type="password" placeholder="请再次输入密码"></el-input>
+                        <el-input  prefix-icon="el-icon-mobile-phone" v-model="loginInfo.account" placeholder="请输入手机号码"></el-input>
+                        <el-input  prefix-icon="el-icon-message" v-model="loginInfo.account" placeholder="请输入邮箱"></el-input>
+                        <div class="loginBtnBox">
+                            <div class="loginBtn">
+                                注册
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </el-dialog>
 </div>
 </template>
 <script></script>
@@ -37,7 +82,23 @@ export default {
   data(){
       return{
           keyword:'',
-          linkIndex:'/Bloghome'
+          linkIndex:'/Bloghome',
+          dialogVisible:false,
+          actTab:'login',
+          activeTab:[
+            {
+                tabName:'注册',
+                tabVal:'register'
+            },
+            {
+                tabName:'登陆',
+                tabVal:'login'
+            },
+          ],
+          loginInfo:{
+               account:'',
+               password:''
+          }
       }
   },
   mounted(){
@@ -70,7 +131,7 @@ export default {
     display: flex;
     justify-content: center;
     background: #fff;
-    z-index: 9999;
+    z-index: 99;
 }
 .headerBox{
     width: 100%;
@@ -151,6 +212,121 @@ export default {
     }
     &::-webkit-scrollbar{
         width: 5px!important;
+    }
+}
+>>>.el-dialog__header{
+    padding: 0px !important;
+}
+>>>.el-dialog__body{
+    padding: 0px !important;
+}
+.loginTitle{
+    width: 100%;
+}
+.loginBody{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.loginLogoBox{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 70px;
+    position: relative;
+    .bagck{
+        position: absolute;
+        top: 0;
+        left: 0;
+        filter: blur(10px);
+        width: 100%;
+        height: 100%;
+    }
+    .img{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 50px;
+        height: 50px;
+    }
+}
+.loginBox{
+    width: 100%;
+    .loginTab{
+        width:100%;
+        display: flex;
+        justify-content: space-evenly;
+        .tabItem{
+            padding: 10px;
+            width: 50%;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .actTab{
+            border-bottom: 1px solid #ff8198;
+        }
+    }
+    .loginInput{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0;
+        flex-wrap: wrap;
+        >>>.el-input__icon{
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        >>>.el-input{
+            width: 80%;
+        }
+        >>>.el-input__inner:focus{
+            border-bottom: 1px solid #ff8198!important;
+        }
+        >>>.el-input__inner{
+            // width: auto!important;
+            border: none!important;
+            border-bottom: 1px solid #f0f0f0!important;
+            border-radius: 0px;
+            margin: 10px 0;
+            font-size:14px;
+                padding-left: 35px;
+        }
+        .forgetPass{
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            font-size: 10px;
+            padding-right: 15px;
+            cursor: pointer;
+            span{
+                &:hover{
+                    
+                    color: #ff9198;
+                }
+            }
+        }
+        .loginBtnBox{
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .loginBtn{
+           width: 140px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            background: #ff8198;
+            color: #fff;
+            margin-left: 15px;
+            &:hover{
+                background: #faa5b4;
+            }      
+        }
     }
 }
 </style>
