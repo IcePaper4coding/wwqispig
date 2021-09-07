@@ -45,7 +45,7 @@ export default {
   methods:{
       toLink(link){
           if(link){
-              if(this.linkIndex != link){
+              if(this.$route.path != link){
                   this.linkIndex = link
                   this.$router.push(link)
               }
@@ -79,7 +79,7 @@ export default {
     align-items: center;
     justify-content: space-evenly;
     font-size: 15px;
-    
+    box-shadow: 0 4px 20px rgba(0,0,0,.13), 0 2px 6px rgba(0,0,0,.1);
     .logo{
         width: 15%;
         height: 60px;

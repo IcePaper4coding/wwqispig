@@ -143,6 +143,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            display: flex;
         }
         .yb-catalog__item--active{
             color:#faa5b4;

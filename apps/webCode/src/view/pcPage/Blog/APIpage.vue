@@ -40,7 +40,7 @@
         </div>
            <div class="BlogHomeListLimitBox">
             <div class="ListItem" v-for="(item,index) of shareList" :key="'muban'+index" @click="toLink(item.DtlId)">
-                    <img src="http://47.94.235.210:8090/uploadData/getFile/611b699289a8ab65bad7f380" alt="" class="listImg">
+                    <img src="http://47.94.235.210:8090/uploadData/getFile/61308b8e89a8ab65bad7f38c" alt="" class="listImg">
                 <div class="ListInfoBox">
                     <div class="ListInfotips">
                         <div class="infoTitle">{{item.groupId}}</div>

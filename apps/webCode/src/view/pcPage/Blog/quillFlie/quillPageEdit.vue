@@ -1,10 +1,10 @@
 <template>
 <div class="body" id="body">
-        <div class="addQuillBox">
-         <wqEditor :title.sync="title" v-model="editerInfo" :propObj="propObj"></wqEditor> 
+        <div>
+            <wqEditor :title.sync="title" v-model="editerInfo" :propObj="propObj"></wqEditor> 
         </div>
-         <div class="pubBtn" @click="tosave">
-            发布
+         <div class="pubBtn" @click="toSaveFunc">
+            保存编辑
         </div>
 </div>
 </template>
@@ -30,69 +30,67 @@ export default {
       }
   },
   mounted(){
-    //   this.$http.add('api',{})
-    // this.$http.change('api',[],()=>{})
+      this.queryDtl()
   },
   methods:{
-      tosave(item){
+      queryDtl(){
+        this.$http.query('api').then(res=>{
 
+            var allres = JSON.parse(res.data.jsonmap)
+            var id = this.$route.params.id
+            for(var item of allres){
+                if(item.DtlId == id){
+                    this.editerInfo = JSON.parse(item.content)
+                    this.title = item.minTitle
+                }
+            }
+        })
+      },
+      getinfo(){
+
+      },
+      toSaveFunc(){
         this.$http.query('api').then(res=>{
             var allres = JSON.parse(res.data.jsonmap)
             var id = new Date().getTime()
             var quillObj = {
               minTitle:this.title,
               content:this.editerInfo,
-              DtlId:id+allres.length,
+              DtlId:this.$route.params.id,
               createdTime:id,
-              viewNum:0,
+              viewNum:200,
               groupId:'全部'
             }
-            allres.push(quillObj)
+            for(var index in allres){
+                if(allres[index].DtlId == this.$route.params.id){
+                    quillObj.viewNum=allres[index].viewNum
+                    allres.splice(index,1,quillObj)
+                }
+            }
             this.$http.change('api',allres,()=>{
                 this.$message({
                     showClose: true,
-                    message: '发布成功',
+                    message: '保存成功',
                     type: 'success'
                 });
-                this.$router.push('/BlogpageDtl/'+quillObj.DtlId)
+                this.$router.push('/BlogpageDtl/'+this.$route.params.id)
             })
         })
-      },
-        tolog(){
-            this.$refs.quilleditor.tolog()
-        },
-        getinfo(){
-
-        }
+      }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-        .addQuillBox{
-            width: 100%;
-            display: flex;
-            height:100%;
-            overflow: scroll;
-            justify-content: center;
-        }
-        .saveBtn{
-        position: fixed;
-        bottom: 50px;
-        right: 200px;
-            width: 100px;
-            height: 40px;
-            line-height: 40px;
-            border-radius: 4px;
-            text-align: center;
-            cursor: pointer;
-            background: #ff8198;
-            color: #fff;
-            margin-left: 15px;
-            &:hover{
-                background: #faa5b4;
-            }
-        }
+.body{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+>>>.yb-editor__title{
+    width: 100%!important;
+}
         .pubBtn{
         position: fixed;
         bottom: 50px;
@@ -110,10 +108,4 @@ export default {
                 background: #faa5b4;
             }
         }
->>>.yb-editor__title{
-    width: 100%!important;
-}
-.quilleditor{
-    width: 80%;
-}
 </style>

@@ -87,7 +87,7 @@
             </div>
         </div>
         <input class="yb-editor__title" type="text" v-model="titleStr" :disabled="propObj.disabledBool" placeholder="页面标题" v-show="propObj.titleBool">
-        <div :id="propObj.keyStr || 'yb-editor__body'" class="yb-editor__body" :style="'padding-bottom: 100px;height:calc(100% - ' + (propObj.disabledBool ? 0 : ( varObj.tableBool || varObj.tableBtnBool ? 75 : 45 )) + 'px)'"></div>
+        <div :id="propObj.keyStr || 'yb-editor__body'" class="yb-editor__body" :style="'padding-bottom: 100px;' + (propObj.disabledBool ? 0 : ( varObj.tableBool || varObj.tableBtnBool ? 75 : 45 )) + 'px)'"></div>
         <yb-editor-catalog :instanceObj="quillObj" v-model="varObj.catalogBool"></yb-editor-catalog>
         <div id="nothingTool"></div>
     </div>
@@ -266,35 +266,7 @@
                         table:false,
                         'better-table': {
                             operationMenu: {
-                                items: {
-                                    insertColumnRight: {
-                                        text: '向右插入一列'
-                                    },
-                                    insertColumnLeft: {
-                                        text: '向左插入一列'
-                                    },
-                                    insertRowUp: {
-                                        text: '向上插入一列'
-                                    },
-                                    insertRowDown: {
-                                        text: '向下插入一列'
-                                    },
-                                    mergeCells: {
-                                        text: '合并单元格'
-                                    },
-                                    unmergeCells: {
-                                        text: '拆分单元格'
-                                    },
-                                    deleteColumn: {
-                                        text: '删除列'
-                                    },
-                                    deleteRow: {
-                                        text: '删除行'
-                                    },
-                                    deleteTable: {
-                                        text: '删除表格'
-                                    },
-                                }
+                                items: vm.getTableMuse()
                             }
                         },
                         keyboard: {
@@ -314,6 +286,35 @@
                 this.$set(this.varObj,'tableMaxColNum',5);
                 this.$set(this.varObj,'tableRowNum',0);
                 this.$set(this.varObj,'tableColNum',0);
+            },
+            getTableMuse(){
+                if(this.propObj.disabledBool){
+                    var res = {
+                                insertColumnRight: false,
+                                insertColumnLeft:false,
+                                insertRowUp:false,
+                                insertRowDown: false,
+                                mergeCells: false,
+                                unmergeCells: false,
+                                deleteColumn: false,
+                                deleteRow: false,
+                                deleteTable: false,
+                    }
+                }
+                else{
+                    var res = {
+                                insertColumnRight: {text: '向右插入一列'},
+                                insertColumnLeft: { text: '向左插入一列'},
+                                insertRowUp: {text: '向上插入一行'},
+                                insertRowDown: {text: '向下插入一行'},
+                                mergeCells: {text: '合并单元格'},
+                                unmergeCells: {text: '拆分单元格'},
+                                deleteColumn: {text: '删除列'},
+                                deleteRow: {text: '删除行'},
+                                deleteTable: {text: '删除表格'},
+                    }
+                }
+                    return res
             },
             /* 设置表格编辑器行数和列数 */
             setTablePickerFn(){
@@ -601,6 +602,7 @@ body{
         thead th{
             background-color: #CCE8EB;
             width: 100px;
+            
         }
     }
     .yb-editor__table-picker{

@@ -120,6 +120,12 @@ let router = [
                 meta: { requireAuth: false, title: "API文档", keepAlive: true }
             },
             {
+                path: "/quillPageEdit/:id",
+                name: "quillPageEdit",
+                component: resolve => require.ensure([], () => resolve(require('../view/pcPage/Blog/quillFlie/quillPageEdit.vue')), 'quillPageEdit'),
+                meta: { requireAuth: false, title: "编辑页面文档", keepAlive: true }
+            },
+            {
                 path: "/BlogpageDtl/:id",
                 name: "APIpage",
                 component: resolve => require.ensure([], () => resolve(require('../view/pcPage/Blog/quillFlie/quillPageDtl.vue')), 'quillPageDtl'),
