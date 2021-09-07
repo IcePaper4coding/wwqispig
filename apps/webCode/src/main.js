@@ -11,8 +11,6 @@ import VueDND from 'awe-dnd'
 Vue.prototype.$toast=utils;  //其中$xx为新命的名。
 Vue.use(ElementUI);
 Vue.use(VueDND);
-import qsEditor from 'ybQuillEditor'
-Vue.use(qsEditor)
 
 import Bus from './plugins/Bus.js';
 Vue.prototype.$Bus=Bus

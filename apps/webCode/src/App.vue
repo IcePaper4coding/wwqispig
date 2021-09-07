@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> 
 #app {
   /* font-family: 'Comic Sans MS', cursive, sans-serif; */
   -webkit-font-smoothing: antialiased;
