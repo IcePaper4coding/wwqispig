@@ -18,7 +18,6 @@
         开始
     </div>
     <div class="theline" >
-        <img src="http://wwqwby.cn/myimg/jiantou.gif" alt="" style="width:50px">
     </div>
     <div class="mingdan" v-if="history.length>0">
         <div v-for="(item,index) of history" :key="index+'ia'" class="infoname">
@@ -321,8 +320,9 @@ export default {
     top:calc(50% - 300px);
     left: 50%;
     transform: translate(-50%,-50%);
-    width: 50px;
-    height: 50px;
+    background: #ff5555;
+    height: 30px;
+    width: 10px;
 }
 .mingdan{
     position: fixed;

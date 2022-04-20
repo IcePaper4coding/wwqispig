@@ -12,6 +12,11 @@ let router = [
         component: resolve => require.ensure([], () => resolve(require('../view/test/test.vue')), 'test')
     },
     {
+        path: '/test2',
+        meta: { requireAuth: false,title: '登录页' },
+        component: resolve => require.ensure([], () => resolve(require('../view/test/test2.vue')), 'test')
+    },
+    {
         path: '/login',
         meta: { requireAuth: false,title: '登录页' },
         component: resolve => require.ensure([], () => resolve(require('../view/home/login.vue')), 'login')

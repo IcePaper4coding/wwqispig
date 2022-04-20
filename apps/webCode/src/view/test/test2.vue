@@ -1,6 +1,5 @@
 <template>
   <div class="table_box">
-      <img src="../../../static/img/loading.png" alt="" class="loadingImg" id="loadingImg">
       <div class="table_config">
         <input type="number" v-model="tableConfig.colNum" placeholder="列数"> 列
         <input type="number" v-model="tableConfig.rowNum" placeholder="宽数"> 行
@@ -58,16 +57,8 @@ export default {
                 startCell:{
                 },
             },
-            selcetTableCells:{
-                start:{
-                    left:0,
-                    top:0
-                },
-                end:{
-                    left:0,
-                    top:0
-                }
-            }
+            mergeCellList:{},
+            selcetTableCells:{}
         }
     },
     computed: {
@@ -75,14 +66,6 @@ export default {
     },
     mounted() {
         this.init()
-        var i = 0
-        setInterval(() => {
-           document.getElementById('loadingImg').style.transform = 'rotateZ('+(45*i)+'deg)'
-           i++
-           if(i>8){
-               i = 1
-           } 
-        }, 100);
     },
     methods:{
         init(){
@@ -112,14 +95,12 @@ export default {
                             endCell:{
                             } //结束单元格 
                         }
-                        this.startPoisition.x = e.screenX
-                        this.startPoisition.y = e.screenY
+                        this.selcetTableCells ={}
                         this.toselct = true
                         var zobj = {
                             rowId:e.target.id.split('_')[0],
                             colId:e.target.id.split('_')[1]
                         }
-                        this.startPoisition.startCell = zobj
                         this.$set(this.selectCellList,'startCell',zobj)
                     })
                     document.addEventListener('mousemove',(e)=>{
@@ -127,76 +108,65 @@ export default {
                             return
                         }
                         if(this.toselct){
-                            var x = e.screenX
-                            var y = e.screenY
-                            if(x-this.startPoisition.x>0||y-this.startPoisition.y>0){
-                                console.log(e.target.id);
                                 var rowId = e.target.id.split('_')[0]
                                 var colId = e.target.id.split('_')[1]
-                                var truerowId = ''
-                                var truecolId= ''
-                                if(this.tableConfig.mergeCells.length>0){
-                                    this.tableConfig.mergeCells.forEach((item)=>{
-                                        if(item.startCell.rowId == rowId&&item.startCell.colId == colId){
-                                            truerowId = this.returnBigger(rowId,this.tableConfig.rows[rowId].index,item.endCell.rowId,this.tableConfig.rows[item.endCell.rowId].index)
-                                            truecolId = this.returnBigger(colId,this.tableConfig.cols[colId].index,item.endCell.colId,this.tableConfig.cols[item.endCell.colId].index)
-                                            
-                                        }
-                                        else if(item.startCell.rowId == this.startPoisition.startCell.rowId&&item.startCell.colId == this.startPoisition.startCell.colId){
-                                            truerowId = this.returnBigger(rowId,this.tableConfig.rows[rowId].index,item.endCell.rowId,this.tableConfig.rows[item.endCell.rowId].index)
-                                            truecolId = this.returnBigger(colId,this.tableConfig.cols[colId].index,item.endCell.colId,this.tableConfig.cols[item.endCell.colId].index)}
+                                if(this.mergeCellList[e.target.id]){
+                                    this.$set(this.selcetTableCells,e.target.id,{
+                                        rowIndex:this.tableConfig.rows[rowId].index,
+                                        colIndex:this.tableConfig.cols[colId].index
                                     })
-                                    if(!truerowId&&!truecolId){
-                                        truerowId = this.returnBigger(this.startPoisition.startCell.rowId,this.tableConfig.rows[this.startPoisition.startCell.rowId].index,rowId,this.tableConfig.rows[rowId].index)
-                                        truecolId = this.returnBigger(this.startPoisition.startCell.colId,this.tableConfig.cols[this.startPoisition.startCell.colId].index,colId,this.tableConfig.cols[colId].index)
+                                    this.$set(this.selcetTableCells,this.mergeCellList[e.target.id],{
+                                        rowIndex:this.tableConfig.rows[this.mergeCellList[e.target.id].split('_')[0]].index,
+                                        colIndex:this.tableConfig.cols[this.mergeCellList[e.target.id].split('_')[1]].index
+                                    })
+                                }
+                                else{
+                                    this.$set(this.selcetTableCells,e.target.id,{
+                                        rowIndex:this.tableConfig.rows[rowId].index,
+                                        colIndex:this.tableConfig.cols[colId].index
+                                    })
+                                }
+                                var firstId = Object.keys(this.selcetTableCells)[0]
+                                var ltrowIndex = this.selcetTableCells[firstId].rowIndex
+                                var ltcolIndex = this.selcetTableCells[firstId].colIndex
+                                var rbrowIndex = this.selcetTableCells[firstId].rowIndex
+                                var rbcolIndex = this.selcetTableCells[firstId].colIndex
+                                var cellConfig ={
+                                    left:firstId.split('_')[1],
+                                    top:firstId.split('_')[0],
+                                    right:firstId.split('_')[1],
+                                    bottom:firstId.split('_')[0],
+                                }
+                                for(let id in this.selcetTableCells){
+                                    if(ltrowIndex>this.selcetTableCells[id].rowIndex){
+                                        ltrowIndex=this.selcetTableCells[id].rowIndex
+                                        cellConfig.top = id.split('_')[0]
+                                    }
+                                    if(ltcolIndex>this.selcetTableCells[id].colIndex){
+                                        ltcolIndex=this.selcetTableCells[id].colIndex
+                                        cellConfig.left = id.split('_')[1]
+                                    }
+                                    if(rbrowIndex<this.selcetTableCells[id].rowIndex){
+                                        rbrowIndex=this.selcetTableCells[id].rowIndex
+                                        cellConfig.bottom = id.split('_')[0]
+                                    }
+                                    if(rbcolIndex<this.selcetTableCells[id].colIndex){
+                                        rbcolIndex=this.selcetTableCells[id].colIndex
+                                        cellConfig.right = id.split('_')[1]
                                     }
                                 }
-                                else{
-                                truerowId = rowId
-                                truecolId = colId
+                                var selectCellList={
+                                    startCell:{
+                                        rowId:cellConfig.top,
+                                        colId:cellConfig.left
+                                    },   //起始单元格
+                                    endCell:{
+                                        rowId:cellConfig.bottom,
+                                        colId:cellConfig.right
+                                    } //结束单元格 
                                 }
-                                var obj = {
-                                    rowId:truerowId,
-                                    colId:truecolId
-                                }
-                                this.$set(this.selectCellList,'endCell',obj)
-                            }
-                            else{
-                                let endCopy =  JSON.parse(JSON.stringify(this.startPoisition.startCell))
-                                var rowId = endCopy.rowId
-                                var colId = endCopy.colId
-                                var truerowId = ''
-                                var truecolId= ''
-                                if(this.tableConfig.mergeCells.length>0){
-                                    this.tableConfig.mergeCells.forEach((item)=>{
-                                        if(item.startCell.rowId == rowId&&item.startCell.colId == colId){
-                                            truerowId = this.returnSmaller(rowId,this.tableConfig.rows[rowId].index,item.endCell.rowId,this.tableConfig.rows[item.endCell.rowId].index)
-                                            truecolId = this.returnSmaller(colId,this.tableConfig.cols[colId].index,item.endCell.colId,this.tableConfig.cols[item.endCell.colId].index)
-                                        }
-                                        else if(item.startCell.rowId == e.target.id.split('_')[0]&&item.startCell.colId == e.target.id.split('_')[1]){
-                                            truerowId = this.returnSmaller(e.target.id.split('_')[0],this.tableConfig.rows[e.target.id.split('_')[0]].index,item.endCell.rowId,this.tableConfig.rows[item.endCell.rowId].index)
-                                            truecolId = this.returnSmaller(e.target.id.split('_')[1],this.tableConfig.cols[e.target.id.split('_')[1]].index,item.endCell.colId,this.tableConfig.cols[item.endCell.colId].index)
-                                        }
-                                    })
-                                }
-                                else{
-                                    truerowId = rowId
-                                    truecolId = colId
-                                }
-                                endCopy ={
-                                    rowId:truerowId,
-                                    colId:truecolId
-                                }
-                                var obj = {
-                                    rowId:e.target.id.split('_')[0],
-                                    colId:e.target.id.split('_')[1]
-                                }
-                                this.selectCellList={
-                                        startCell:obj,
-                                        endCell:endCopy
-                                }
-                            }
-
+                                this.$set(this.selectCellList,'startCell',selectCellList.startCell)
+                                this.$set(this.selectCellList,'endCell',selectCellList.endCell)
                         }
                     })
                     document.addEventListener('mouseup',(e)=>{
@@ -204,6 +174,7 @@ export default {
                             document.getElementById('table').focus()
                         }
                         this.toselct = false
+                        console.log(this.selcetTableCells,77);
                     })
                 }
             );
@@ -230,6 +201,7 @@ export default {
                                 colspan:Math.abs(rbcolIndex - ltcolIndex)+1,
                                 rowspan:Math.abs(rbrowIndex - ltrowIndex)+1,
                             }
+                            this.$set(this.mergeCellList,rowId+'_'+colsId,item.endCell.rowId+'_'+item.endCell.colId)
                             return 
                         }
                         res = 'hidden'
@@ -320,7 +292,7 @@ export default {
             }
         },
         returnSmaller(aId,a,bId,b){
-            if(a>b){
+            if(a<b){
                 return aId
             }
             else{
@@ -349,19 +321,5 @@ export default {
 }
 .table_item{
     outline: none;
-}
-.loadingImg{
-    // animation: loading 2s infinite linear;
-}
-@keyframes loading {
-    // 0%{
-    //      transform: rotateZ(0deg);
-    // }
-    // 50%{
-    //      transform: rotateZ(100deg);
-    // }
-    // 100%{
-    //      transform: rotateZ(360deg);
-    // }
 }
 </style>
